@@ -7,6 +7,7 @@ import (
 
 	"github.com/cespare/xxhash/v2"
 	"github.com/containerd/containerd"
+	"github.com/containerd/containerd/namespaces"
 )
 
 func main() {
@@ -14,13 +15,15 @@ func main() {
 }
 
 func containerdTest() error {
+	ctx := namespaces.WithNamespace(context.Background(), "docker")
+	//	cri = namespaces.WithNamespace(ctx, "cri")
 	runtimeURI := "/run/containerd/containerd.sock"
 	client, err := containerd.New(runtimeURI)
 	if err != nil {
 		fmt.Printf("error to init containerd:%v\n", err.Error())
 		return err
 	}
-	images, err := client.ImageService().List(context.TODO())
+	images, err := client.ImageService().List(ctx)
 	if err != nil {
 		fmt.Printf("error to get image service:%v\n", err.Error())
 		return err
