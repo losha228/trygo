@@ -19,7 +19,7 @@ func main() {
 
 func dockerClientTest() error {
 	fmt.Printf("dockerClientTest:\n")
-	runtimeURI := "unix://var/run/docker.sock"
+	runtimeURI := "unix:///var/run/docker.sock"
 	//cli, err := dockerapi.NewClientWithOpts(dockerapi.FromEnv)
 
 	cli, err := dockerapi.NewClient(runtimeURI, "1.41", nil, nil)
@@ -28,15 +28,16 @@ func dockerClientTest() error {
 		fmt.Printf("fail to create docker client: %v", err.Error())
 		return err
 	}
-	fmt.Printf("cli %v", cli)
 	defer cli.Close()
 	containers, err := cli.ContainerList(context.Background(), types.ContainerListOptions{
-		All: true,
+		All:    true,
+		Latest: false,
+		Limit:  100,
 	})
 	if err != nil {
 		panic(err)
 	}
-
+	fmt.Println("List images:")
 	for _, container := range containers {
 		fmt.Printf("%s %s\n", container.ID[:10], container.Image)
 	}
