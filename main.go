@@ -17,9 +17,14 @@ func containerdTest() error {
 	runtimeURI := "/run/containerd/containerd.sock"
 	client, err := containerd.New(runtimeURI)
 	if err != nil {
+		fmt.Printf("error:%v\n", err.Error())
 		return err
 	}
-	images, _ := client.ImageService().List(context.TODO())
+	images, err := client.ImageService().List(context.TODO())
+	if err != nil {
+		fmt.Printf("error:%v\n", err.Error())
+		return err
+	}
 	for _, m := range images {
 		fmt.Printf("%s\n", m.Name)
 	}
