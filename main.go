@@ -33,6 +33,8 @@ func dockerClientTest() error {
 	for _, container := range containers {
 		fmt.Printf("%s %s\n", container.ID[:10], container.Image)
 	}
+
+	return nil
 }
 
 func containerdTest() error {
