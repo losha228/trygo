@@ -8,21 +8,43 @@ import (
 	"github.com/cespare/xxhash/v2"
 	"github.com/containerd/containerd"
 	"github.com/containerd/containerd/namespaces"
+	"github.com/docker/docker/api/types"
+	dockerapi "github.com/docker/docker/client"
 )
 
 func main() {
 	containerdTest()
+	dockerClientTest()
+}
+
+func dockerClientTest() error {
+	fmt.Printf("dockerClientTest")
+	runtimeURI := "/var/run/docker.sock"
+	cli, err := dockerapi.NewClient(runtimeURI, "1.23", nil, nil)
+	if err != nil {
+		return err
+	}
+	defer cli.Close()
+	containers, err := cli.ContainerList(context.Background(), types.ContainerListOptions{})
+	if err != nil {
+		panic(err)
+	}
+
+	for _, container := range containers {
+		fmt.Printf("%s %s\n", container.ID[:10], container.Image)
+	}
 }
 
 func containerdTest() error {
 	ctx := namespaces.WithNamespace(context.Background(), "docker")
 	//	cri = namespaces.WithNamespace(ctx, "cri")
 	runtimeURI := "/run/containerd/containerd.sock"
-	client, err := containerd.New(runtimeURI)
+	client, err := containerd.New(runtimeURI, containerd.WithDefaultNamespace("docker"))
 	if err != nil {
 		fmt.Printf("error to init containerd:%v\n", err.Error())
 		return err
 	}
+	defer client.Close()
 	images, err := client.ImageService().List(ctx)
 	if err != nil {
 		fmt.Printf("error to get image service:%v\n", err.Error())

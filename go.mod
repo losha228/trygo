@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/cespare/xxhash/v2 v2.1.2
 	github.com/containerd/containerd v1.6.10
+	github.com/docker/docker v1.4.2-0.20190924003213-a8608b5b67c7
 )
 
 require (
@@ -15,7 +16,10 @@ require (
 	github.com/containerd/fifo v1.0.0 // indirect
 	github.com/containerd/ttrpc v1.1.0 // indirect
 	github.com/containerd/typeurl v1.0.2 // indirect
+	github.com/docker/distribution v2.7.1+incompatible // indirect
+	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-events v0.0.0-20190806004212-e31b211e4f1c // indirect
+	github.com/docker/go-units v0.4.0 // indirect
 	github.com/gogo/googleapis v1.4.0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
