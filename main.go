@@ -18,10 +18,12 @@ func main() {
 }
 
 func dockerClientTest() error {
-	fmt.Printf("dockerClientTest")
+	fmt.Printf("dockerClientTest:\n")
 	runtimeURI := "/var/run/docker.sock"
-	cli, err := dockerapi.NewClient(runtimeURI, "1.23", nil, nil)
+	// cli2, err := dockerapi.NewClientWithOpts(dockerapi.FromEnv)
+	cli, err := dockerapi.NewClient(runtimeURI, "1.41", nil, nil)
 	if err != nil {
+		fmt.Printf("fail to create docker client: %v", err.Error())
 		return err
 	}
 	defer cli.Close()
