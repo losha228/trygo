@@ -33,6 +33,7 @@ func dockerClientTest() error {
 		All:    true,
 		Latest: false,
 		Limit:  100,
+		Size:   true,
 	})
 	if err != nil {
 		panic(err)
