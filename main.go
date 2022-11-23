@@ -19,15 +19,20 @@ func main() {
 
 func dockerClientTest() error {
 	fmt.Printf("dockerClientTest:\n")
-	runtimeURI := "/var/run/docker.sock"
-	// cli2, err := dockerapi.NewClientWithOpts(dockerapi.FromEnv)
+	runtimeURI := "unix://var/run/dockershim.sock"
+	//cli, err := dockerapi.NewClientWithOpts(dockerapi.FromEnv)
+
 	cli, err := dockerapi.NewClient(runtimeURI, "1.41", nil, nil)
+
 	if err != nil {
 		fmt.Printf("fail to create docker client: %v", err.Error())
 		return err
 	}
+	fmt.Printf("cli %v", cli)
 	defer cli.Close()
-	containers, err := cli.ContainerList(context.Background(), types.ContainerListOptions{})
+	containers, err := cli.ContainerList(context.Background(), types.ContainerListOptions{
+		All: true,
+	})
 	if err != nil {
 		panic(err)
 	}
