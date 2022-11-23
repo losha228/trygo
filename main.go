@@ -7,7 +7,6 @@ import (
 
 	"github.com/cespare/xxhash/v2"
 	"github.com/containerd/containerd"
-	"github.com/docker/docker/plugin/executor/containerd"
 )
 
 func main() {
