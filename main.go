@@ -19,7 +19,7 @@ func main() {
 
 func dockerClientTest() error {
 	fmt.Printf("dockerClientTest:\n")
-	runtimeURI := "unix://var/run/dockershim.sock"
+	runtimeURI := "unix://var/run/docker.sock"
 	//cli, err := dockerapi.NewClientWithOpts(dockerapi.FromEnv)
 
 	cli, err := dockerapi.NewClient(runtimeURI, "1.41", nil, nil)
