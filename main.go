@@ -20,7 +20,10 @@ import (
 )
 
 func main() {
-	readCert("/tmp")
+	_, err := readCert("/tmp")
+	if err != nil {
+		fmt.Printf("err:%v", err)
+	}
 	//containerdTest()
 	//dockerClientTest()
 }
@@ -49,7 +52,7 @@ func readCert(folder string) (string, error) {
 	if notifyFile == "" {
 		return "", fmt.Errorf("Invalid notify file.")
 	}
-	fmt.Printf("Found notify file: %s", notifyFile)
+	fmt.Printf("Found notify file: %s\n", notifyFile)
 
 	file, err := os.Open(notifyFile)
 	if err != nil {
