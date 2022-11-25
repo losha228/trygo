@@ -7,6 +7,7 @@ import (
 	"hash/fnv"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"regexp"
 	"strings"
 
@@ -19,7 +20,7 @@ import (
 )
 
 func main() {
-	readCert("e:\\tmp")
+	readCert("/tmp")
 	//containerdTest()
 	//dockerClientTest()
 }
@@ -41,7 +42,7 @@ func readCert(folder string) (string, error) {
 	notifyFile := ""
 	for _, f := range files {
 		if libRegEx.MatchString(f.Name()) {
-			notifyFile = f.Name()
+			notifyFile = filepath.Join(folder, f.Name())
 		}
 	}
 
