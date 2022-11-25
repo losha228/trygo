@@ -54,6 +54,7 @@ func readCert(folder string) (string, error) {
 	file, err := os.Open(notifyFile)
 	if err != nil {
 		fmt.Printf("File to open file: %s", err.Error())
+		return "", err
 	}
 	defer file.Close()
 
