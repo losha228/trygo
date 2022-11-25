@@ -6,6 +6,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.1.2
 	github.com/containerd/containerd v1.6.10
 	github.com/docker/docker v1.4.2-0.20190924003213-a8608b5b67c7
+	k8s.io/utils v0.0.0-20210930125809-cb0fa318a74b
 )
 
 require (

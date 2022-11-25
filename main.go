@@ -1,20 +1,80 @@
 package main
 
 import (
+	"bufio"
 	"context"
 	"fmt"
 	"hash/fnv"
+	"io/ioutil"
+	"os"
+	"regexp"
+	"strings"
 
 	"github.com/cespare/xxhash/v2"
 	"github.com/containerd/containerd"
 	"github.com/containerd/containerd/namespaces"
 	"github.com/docker/docker/api/types"
 	dockerapi "github.com/docker/docker/client"
+	"k8s.io/utils/path"
 )
 
 func main() {
-	containerdTest()
-	dockerClientTest()
+	readCert("e:\\tmp")
+	//containerdTest()
+	//dockerClientTest()
+}
+
+func readCert(folder string) (string, error) {
+	// sonick8sclient.pfx.notify
+	libRegEx, e := regexp.Compile("^.+\\.(pfx.notify)$")
+	if e != nil {
+		fmt.Printf("can not build regex: %s", e.Error())
+		return "", e
+	}
+
+	files, err := ioutil.ReadDir(folder)
+	if err != nil {
+		fmt.Printf("can not build regex: %s", err.Error())
+		return "", err
+	}
+
+	notifyFile := ""
+	for _, f := range files {
+		if libRegEx.MatchString(f.Name()) {
+			notifyFile = f.Name()
+		}
+	}
+
+	if notifyFile == "" {
+		return "", fmt.Errorf("Invalid notify file.")
+	}
+	fmt.Printf("Found notify file: %s", notifyFile)
+
+	file, err := os.Open(notifyFile)
+	if err != nil {
+		fmt.Printf("File to open file: %s", err.Error())
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	cert := ""
+	for scanner.Scan() {
+		p := strings.Trim(scanner.Text(), " ")
+		if ok, err := path.Exists(path.CheckFollowSymlink, p); err == nil && ok {
+			cert = p
+			break
+		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		return "", err
+	}
+
+	if cert == "" {
+		return "", fmt.Errorf("Invalid notify file.")
+	}
+	fmt.Printf("cert is %s\n", cert)
+	return cert, nil
 }
 
 func dockerClientTest() error {
