@@ -68,6 +68,7 @@ func readCert(folder string) (string, error) {
 	}
 
 	if err := scanner.Err(); err != nil {
+		fmt.Printf("scanner err: %s\n", err.Error())
 		return "", err
 	}
 
